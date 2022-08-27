@@ -23,6 +23,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 app.use(morgan('dev'));
+app.use(express.urlencoded({ extended: true }))
 
 
 //routes
@@ -39,6 +40,18 @@ app.get('/blogs', (req, res) => {
         })
         .catch((err) => {
             console.log(err)
+        })
+});
+
+app.post('/blogs', (req, res) => {
+    const blog = new Blog(req.body)
+
+    blog.save()
+        .then((result) => {
+            res.redirect('/blogs');
+        })
+        .catch((err) => {
+            console.log(err);
         })
 })
 app.get('/about', (req, res) => {
